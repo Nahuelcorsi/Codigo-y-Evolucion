@@ -16,7 +16,7 @@ export const sitio = {
 
 // WhatsApp: número en formato internacional sin + ni espacios (54 9 11 ...).
 export const whatsapp = {
-  numero: '5491164610617',
+  numero: '5491132112203',
   mensaje: 'Hola Nahuel, vi tu página Código & Evolución y quería consultarte por un proyecto.',
 };
 
