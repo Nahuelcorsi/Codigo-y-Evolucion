@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.png';
+import { sitio } from '../data/sitio';
+
+const links = [
+  { href: '/#sobre-mi', texto: 'Sobre mí' },
+  { href: '/proyectos/', texto: 'Proyectos' },
+  { href: '/#habilidades', texto: 'Habilidades' },
+  { href: '/#contacto', texto: 'Contacto' },
+];
+---
+<header class="header">
+  <div class="container inner">
+    <a href="/" class="marca" aria-label={`${sitio.nombre}, inicio`}>
+      <Image src={logo} alt="" width={40} height={40} densities={[1, 2]} loading="eager" />
+      <span>Código <b>&amp;</b> Evolución</span>
+    </a>
+    <nav aria-label="Principal">
+      <ul>
+        {links.map((l) => <li><a href={l.href}>{l.texto}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(10, 17, 30, 0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(36, 52, 79, 0.7);
+  }
+  .inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; flex-wrap: wrap; }
+  .marca { display: flex; align-items: center; gap: 10px; color: var(--text); font-family: var(--font-display); font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; font-size: 0.95rem; }
+  .marca:hover { text-decoration: none; }
+  .marca b { color: var(--orange); }
+  ul { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
+  nav a { color: var(--muted); font-size: 0.93rem; font-weight: 500; }
+  nav a:hover { color: var(--text); text-decoration: none; }
+  @media (max-width: 640px) {
+    .inner { padding: 10px 0; justify-content: center; }
+    ul { gap: 16px; justify-content: center; }
+    .marca span { font-size: 0.85rem; }
+  }
+</style>

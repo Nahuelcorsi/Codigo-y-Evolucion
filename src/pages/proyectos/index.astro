@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const todos = (await getCollection('proyectos')).sort((a, b) => a.data.orden - b.data.orden);
+const grupos = [
+  { id: 'software', titulo: 'Apps y software', items: todos.filter((p) => p.data.categoria === 'software') },
+  { id: 'web', titulo: 'Sitios web', items: todos.filter((p) => p.data.categoria === 'web') },
+  { id: 'robotica', titulo: 'Robótica', items: todos.filter((p) => p.data.categoria === 'robotica') },
+];
+---
+<Base titulo="Proyectos" descripcion="Todos los proyectos de Nahuel Corsi: sitios web, apps y software.">
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">proyectos</p>
+      <h1 class="section-title">Todos los proyectos</h1>
+      <p class="lead">Cada uno nació de una necesidad concreta. Entrá a cualquiera para ver qué hace y cómo está hecho.</p>
+
+      {grupos.map((g) => (
+        <div class="grupo" id={g.id}>
+          <h2>{g.titulo}</h2>
+          {g.items.length > 0 ? (
+            <div class="grid">{g.items.map((p) => <ProjectCard proyecto={p} />)}</div>
+          ) : (
+            <div class="pronto">
+              <span class="cod">&lt;/&gt;</span>
+              <p>Próximamente. Acá van a aparecer mis proyectos de robótica.</p>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .grupo { margin-top: 48px; }
+  .grupo h2 { font-size: 1.4rem; margin-bottom: 20px; }
+  .pronto { display: flex; align-items: center; gap: 18px; padding: 26px; border: 1px dashed var(--border); border-radius: var(--radius); color: var(--muted); }
+  .pronto p { margin: 0; }
+  .cod { font-family: var(--font-mono); font-size: 1.8rem; color: var(--orange); }
+</style>
