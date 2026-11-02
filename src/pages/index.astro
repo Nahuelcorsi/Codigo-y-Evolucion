@@ -4,7 +4,8 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import logo from '../assets/logo.png';
-import { sitio, contacto, habilidades, servicios, proceso } from '../data/sitio';
+import { sitio, contacto, habilidades, servicios, proceso, linkWhatsapp } from '../data/sitio';
+import IconoWhatsapp from '../components/IconoWhatsapp.astro';
 
 const destacados = (await getCollection('proyectos', (p) => p.data.destacado))
   .sort((a, b) => a.data.orden - b.data.orden);
@@ -18,7 +19,7 @@ const destacados = (await getCollection('proyectos', (p) => p.data.destacado))
         <p class="frase">{sitio.frase}</p>
         <p class="rol">{sitio.autor} · {sitio.rol} · {sitio.ubicacion}</p>
         <div class="acciones">
-          <a class="btn btn-primary" href="#contacto">Contame tu proyecto</a>
+          <a class="btn btn-primary btn-wa" href={linkWhatsapp()} target="_blank" rel="noopener"><IconoWhatsapp size={18} />Contame tu proyecto</a>
           <a class="btn" href="/proyectos/">Ver trabajos</a>
         </div>
       </div>
@@ -121,6 +122,8 @@ const destacados = (await getCollection('proyectos', (p) => p.data.destacado))
         <p class="eyebrow">contacto</p>
         <h2 class="section-title">¿Tenés un proyecto en mente?</h2>
         <p class="lead">Contame qué necesitás y te respondo con una propuesta. Sin compromiso.</p>
+        <a class="btn btn-primary btn-wa grande" href={linkWhatsapp()} target="_blank" rel="noopener"><IconoWhatsapp size={22} />Escribime por WhatsApp</a>
+        <p class="o">o seguime en</p>
         <ul class="redes">
           {contacto.map((c) => <li><a class="btn" href={c.url} target="_blank" rel="noopener">{c.nombre}</a></li>)}
         </ul>
@@ -218,6 +221,8 @@ const destacados = (await getCollection('proyectos', (p) => p.data.destacado))
   .cta { text-align: center; padding: 56px 24px; border-radius: 20px; border: 1px solid var(--border);
     background: radial-gradient(600px 240px at 50% 0%, rgba(95, 211, 141, 0.12), transparent 70%), var(--surface); }
   .cta .lead { margin-inline: auto; }
+  .grande { padding: 16px 28px; font-size: 1.05rem; }
+  .o { color: var(--muted); font-size: 0.9rem; margin: 28px 0 12px; }
 
   .sobre { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; }
   .bio p { color: var(--muted); margin: 0 0 1em; }

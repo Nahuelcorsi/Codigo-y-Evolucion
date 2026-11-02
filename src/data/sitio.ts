@@ -14,12 +14,20 @@ export const sitio = {
   ],
 };
 
+// WhatsApp: número en formato internacional sin + ni espacios (54 9 11 ...).
+export const whatsapp = {
+  numero: '5491164610617',
+  mensaje: 'Hola Nahuel, vi tu página Código & Evolución y quería consultarte por un proyecto.',
+};
+
+export const linkWhatsapp = (mensaje = whatsapp.mensaje) =>
+  `https://wa.me/${whatsapp.numero}?text=${encodeURIComponent(mensaje)}`;
+
 export const contacto = [
   { nombre: 'GitHub', url: 'https://github.com/Nahuelcorsi' },
   { nombre: 'Instagram', url: 'https://www.instagram.com/nahuelcorsi_/' },
   { nombre: 'X', url: 'https://x.com/NahuelCorsi_' },
   // { nombre: 'Email', url: 'mailto:tu@mail.com' },
-  // { nombre: 'WhatsApp', url: 'https://wa.me/549XXXXXXXXXX' },
 ];
 
 export const servicios = [

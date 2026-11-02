@@ -13,6 +13,9 @@ const proyectos = defineCollection({
       tecnologias: z.array(z.string()),
       rol: z.string().default('Diseño, desarrollo y publicación'),
       aspectos: z.array(z.string()).default([]),
+      galeria: z
+        .array(z.object({ src: image(), alt: z.string(), movil: z.boolean().default(false) }))
+        .default([]),
       imagen: image().optional(),
       imagenAjuste: z.enum(['cubrir', 'contener']).default('cubrir'),
       demo: z.string().url().optional(),

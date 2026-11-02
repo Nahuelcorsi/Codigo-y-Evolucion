@@ -70,6 +70,7 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; margin: 0 0 0.
 .btn:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--green-2); }
 .btn-primary { background: linear-gradient(135deg, var(--green-2), #2f8f86); border-color: transparent; color: #04120a; }
 .btn-primary:hover { border-color: transparent; }
+.btn-wa { background: #25d366; color: #062b14; }
 
 .tag {
   display: inline-block; font-family: var(--font-mono); font-size: 0.75rem;

@@ -3,14 +3,21 @@ titulo: Hierros Nahuel
 resumen: Tienda web y sistema de gestión para mi propio negocio de chapas y hierros.
 categoria: software
 tecnologias: [Python, CustomTkinter, PostgreSQL, SQLite, HTML, Tailwind, Cloudflare]
-imagen: ../../assets/proyectos/hierros-nahuel.png
-imagenAjuste: contener
+imagen: ../../assets/proyectos/hierros-inicio.jpg
 rol: "Negocio propio: diseño, desarrollo, base de datos e implementación"
 aspectos:
   - "Tienda online con carrito y pedidos por WhatsApp"
   - "Sistema de escritorio usado a diario por varias PCs en red"
   - "Si el servidor se cae, sigue funcionando con una base local"
   - "Presupuestos en PDF, exportación a Excel y lectura por OCR"
+galeria:
+  - src: ../../assets/proyectos/hierros-inicio.jpg
+    alt: "Portada de la tienda online de Hierros Nahuel"
+  - src: ../../assets/proyectos/hierros-tienda.jpg
+    alt: "Catálogo con buscador y filtro por categoría"
+  - src: ../../assets/proyectos/hierros-movil.jpg
+    alt: "La tienda vista desde el celular"
+    movil: true
 destacado: true
 orden: 1
 anio: 2026

@@ -11,6 +11,16 @@ aspectos:
   - "Vista 3D del trabajo con Three.js"
   - "Plano de cortes para aprovechar retazos"
   - "Cuentas de usuario y presupuestos imprimibles"
+galeria:
+  - src: ../../assets/proyectos/calc-porton.jpg
+    alt: "Portón batiente con vista 3D"
+  - src: ../../assets/proyectos/calc-escalera.jpg
+    alt: "Escalera recta con vista 3D"
+  - src: ../../assets/proyectos/calc-baranda.jpg
+    alt: "Baranda con dibujo de frente y medidas"
+  - src: ../../assets/proyectos/calc-movil.jpg
+    alt: "Pantalla de inicio en el celular"
+    movil: true
 destacado: true
 orden: 2
 anio: 2026

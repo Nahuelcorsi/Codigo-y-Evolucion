@@ -2,6 +2,8 @@
 import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import IconoWhatsapp from '../../components/IconoWhatsapp.astro';
+import { linkWhatsapp } from '../../data/sitio';
 
 export async function getStaticPaths() {
   const proyectos = await getCollection('proyectos');
@@ -11,6 +13,8 @@ export async function getStaticPaths() {
 const { proyecto } = Astro.props;
 const d = proyecto.data;
 const { Content } = await render(proyecto);
+const escritorio = d.galeria.filter((g) => !g.movil);
+const moviles = d.galeria.filter((g) => g.movil);
 const etiquetas = { web: 'Aplicación web', software: 'Software a medida', robotica: 'Robótica' };
 ---
 <Base titulo={d.titulo} descripcion={d.resumen}>
@@ -59,9 +63,35 @@ const etiquetas = { web: 'Aplicación web', software: 'Software a medida', robot
         </aside>
       </div>
 
+      {d.galeria.length > 0 && (
+        <section class="galeria" aria-labelledby="titulo-galeria">
+          <h2 id="titulo-galeria">Capturas</h2>
+          {escritorio.length > 0 && (
+            <div class="gal-escritorio">
+              {escritorio.map((g) => (
+                <figure>
+                  <a href={g.src.src} target="_blank" rel="noopener"><Image src={g.src} alt={g.alt} width={900} /></a>
+                  <figcaption>{g.alt}</figcaption>
+                </figure>
+              ))}
+            </div>
+          )}
+          {moviles.length > 0 && (
+            <div class="gal-movil">
+              {moviles.map((g) => (
+                <figure>
+                  <a href={g.src.src} target="_blank" rel="noopener"><Image src={g.src} alt={g.alt} width={360} /></a>
+                  <figcaption>{g.alt}</figcaption>
+                </figure>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
+
       <div class="cierre">
         <p>¿Necesitás algo parecido para tu negocio?</p>
-        <a class="btn btn-primary" href="/#contacto">Hablemos</a>
+        <a class="btn btn-primary btn-wa" href={linkWhatsapp(`Hola Nahuel, vi tu proyecto ${d.titulo} y quería consultarte por algo parecido.`)} target="_blank" rel="noopener"><IconoWhatsapp size={18} />Consultame por WhatsApp</a>
       </div>
     </div>
   </article>
@@ -89,6 +119,19 @@ const etiquetas = { web: 'Aplicación web', software: 'Software a medida', robot
   dt { font-family: var(--font-mono); font-size: 0.75rem; color: var(--orange); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
   dd { margin: 0; font-size: 0.95rem; }
   .tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 4px 0 0; }
+  .galeria { margin-top: 64px; }
+  .galeria h2 { font-size: 1.3rem; margin-bottom: 20px; }
+  figure { margin: 0; }
+  figure a { display: block; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: var(--bg-2); transition: border-color .2s ease; }
+  figure a:hover { border-color: rgba(95, 211, 141, 0.5); }
+  figcaption { margin-top: 10px; color: var(--muted); font-size: 0.88rem; }
+  .gal-escritorio { display: grid; gap: 24px; grid-template-columns: repeat(auto-fill, minmax(min(420px, 100%), 1fr)); }
+  .gal-escritorio :global(img) { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
+  .gal-movil { display: flex; flex-wrap: wrap; gap: 24px; }
+  .gal-escritorio + .gal-movil { margin-top: 32px; }
+  .gal-movil figure { width: min(220px, calc(50% - 12px)); }
+  .gal-movil a { border-radius: 22px; }
+  .gal-movil :global(img) { width: 100%; height: auto; }
   .cierre { margin-top: 64px; padding: 28px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   .cierre p { margin: 0; font-family: var(--font-display); font-size: 1.15rem; }
   @media (max-width: 860px) {
