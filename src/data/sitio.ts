@@ -22,28 +22,8 @@ export const contacto = [
 ];
 
 export const habilidades = [
-  {
-    grupo: 'Frontend',
-    items: ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'Tailwind CSS', 'Astro', 'Three.js (3D)', 'Diseño responsive', 'Web Speech API'],
-  },
-  {
-    grupo: 'Backend y datos',
-    items: ['Python', 'Node.js', 'NestJS', 'Prisma', 'PostgreSQL', 'SQLite', 'Cloudflare D1', 'APIs REST', 'Google Apps Script'],
-  },
-  {
-    grupo: 'Apps y escritorio',
-    items: ['Flutter', 'Android (Java)', 'CustomTkinter', 'C++', 'Mixxx', 'PDF con ReportLab', 'Excel con openpyxl', 'OCR'],
-  },
-  {
-    grupo: 'Automatización y hogar',
-    items: ['Termux', 'Domótica Tuya / Smart Life', 'Control por red local', 'Comandos de voz', 'Scripts en Python'],
-  },
-  {
-    grupo: 'Deploy y herramientas',
-    items: ['Git', 'GitHub', 'GitHub Actions', 'Cloudflare Workers', 'Cloudflare Pages', 'Wrangler', 'Netlify', 'Linux'],
-  },
-  {
-    grupo: 'Forma de trabajo',
-    items: ['Versionado semántico', 'Changelog', 'Tests automáticos', 'Documentación', 'Proyectos reales para clientes'],
-  },
+  { grupo: 'Lenguajes', items: ['Python', 'JavaScript', 'TypeScript', 'Dart', 'C++', 'SQL', 'HTML y CSS'] },
+  { grupo: 'Frontend y apps', items: ['Astro', 'Tailwind CSS', 'Three.js', 'Flutter', 'Android', 'CustomTkinter'] },
+  { grupo: 'Backend y datos', items: ['Node.js', 'NestJS', 'Prisma', 'APIs REST', 'PostgreSQL', 'SQLite', 'Cloudflare D1'] },
+  { grupo: 'Deploy y herramientas', items: ['Git y GitHub', 'GitHub Actions', 'Cloudflare Workers', 'Cloudflare Pages', 'Netlify', 'Linux'] },
 ];
