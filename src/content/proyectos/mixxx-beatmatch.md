@@ -6,7 +6,7 @@ tecnologias: [C++, Mixxx, Android]
 imagen: ../../assets/proyectos/mixxx-beatmatch.png
 imagenAjuste: contener
 destacado: true
-orden: 5
+orden: 4
 anio: 2026
 ---
 

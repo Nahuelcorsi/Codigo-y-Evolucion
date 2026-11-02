@@ -15,7 +15,6 @@ export const sitio = {
 
 export const contacto = [
   { nombre: 'GitHub', url: 'https://github.com/Nahuelcorsi' },
-  { nombre: 'LinkedIn', url: 'https://ar.linkedin.com/in/nahuel-corsi-57b582245' },
   { nombre: 'Instagram', url: 'https://www.instagram.com/nahuelcorsi_/' },
   { nombre: 'X', url: 'https://x.com/NahuelCorsi_' },
   // { nombre: 'Email', url: 'mailto:tu@mail.com' },
@@ -23,8 +22,8 @@ export const contacto = [
 ];
 
 export const habilidades = [
-  { grupo: 'Frontend', items: ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'Tailwind', 'Astro'] },
-  { grupo: 'Backend y datos', items: ['Python', 'Node.js', 'NestJS', 'PostgreSQL', 'SQLite', 'Prisma'] },
-  { grupo: 'Apps', items: ['Flutter', 'Android', 'Python de escritorio (CustomTkinter)', 'C++'] },
-  { grupo: 'Herramientas', items: ['Git y GitHub', 'Cloudflare', 'Netlify', 'Linux / Termux'] },
+  { grupo: 'Lenguajes', items: ['Python', 'JavaScript', 'TypeScript', 'Dart', 'C++', 'SQL', 'HTML y CSS'] },
+  { grupo: 'Frontend y apps', items: ['Astro', 'Tailwind CSS', 'Three.js', 'Flutter', 'Android', 'CustomTkinter'] },
+  { grupo: 'Backend y datos', items: ['Node.js', 'NestJS', 'Prisma', 'APIs REST', 'PostgreSQL', 'SQLite', 'Cloudflare D1'] },
+  { grupo: 'Deploy y herramientas', items: ['Git y GitHub', 'GitHub Actions', 'Cloudflare Workers', 'Cloudflare Pages', 'Netlify', 'Linux'] },
 ];
