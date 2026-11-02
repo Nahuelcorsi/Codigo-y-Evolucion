@@ -6,7 +6,7 @@ tecnologias: [JavaScript, HTML, CSS, Three.js, Cloudflare]
 imagen: ../../assets/proyectos/calculadora-de-materiales.jpg
 demo: https://mediyarma.com.ar
 destacado: true
-orden: 3
+orden: 2
 anio: 2026
 ---
 

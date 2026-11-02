@@ -7,7 +7,7 @@ imagen: ../../assets/proyectos/panel-luces.png
 imagenAjuste: contener
 repo: https://github.com/Nahuelcorsi/panel-luces
 destacado: true
-orden: 4
+orden: 3
 anio: 2026
 ---
 
