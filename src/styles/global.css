@@ -1,0 +1,88 @@
+/* Colores tomados del logo: azul marino, verde, celeste y naranja. */
+:root {
+  --bg: #0a111e;
+  --bg-2: #0f1828;
+  --surface: #131e32;
+  --surface-2: #1a2740;
+  --border: #24344f;
+  --text: #e6edf6;
+  --muted: #9aabc4;
+  --green: #5fd38d;
+  --green-2: #3fa86b;
+  --blue: #6f9fe0;
+  --cyan: #7fd8e8;
+  --orange: #f2996b;
+  --radius: 14px;
+  --max: 1120px;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Montserrat', var(--font);
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(242, 153, 107, 0.08), transparent 60%),
+    radial-gradient(1000px 600px at -10% 10%, rgba(95, 211, 141, 0.07), transparent 60%),
+    var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--green); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; margin: 0 0 0.5em; letter-spacing: -0.01em; }
+
+.container { width: min(var(--max), 100% - 32px); margin-inline: auto; }
+
+.section { padding: 88px 0; }
+.section + .section { border-top: 1px solid rgba(36, 52, 79, 0.6); }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--green);
+  margin: 0 0 10px;
+}
+.eyebrow::before { content: '// '; color: var(--muted); }
+
+.section-title { font-size: clamp(1.8rem, 4vw, 2.4rem); }
+.lead { color: var(--muted); max-width: 62ch; margin: 0 0 40px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 20px; border-radius: 999px;
+  font-weight: 600; font-size: 0.95rem;
+  border: 1px solid var(--border);
+  color: var(--text); background: var(--surface);
+  transition: transform .15s ease, border-color .15s ease, background .15s ease;
+}
+.btn:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--green-2); }
+.btn-primary { background: linear-gradient(135deg, var(--green-2), #2f8f86); border-color: transparent; color: #04120a; }
+.btn-primary:hover { border-color: transparent; }
+
+.tag {
+  display: inline-block; font-family: var(--font-mono); font-size: 0.75rem;
+  padding: 3px 9px; border-radius: 999px;
+  background: rgba(111, 159, 224, 0.12); color: var(--cyan);
+  border: 1px solid rgba(111, 159, 224, 0.25);
+}
+
+.grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); }
+
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; border-radius: 6px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
