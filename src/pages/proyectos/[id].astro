@@ -11,43 +11,88 @@ export async function getStaticPaths() {
 const { proyecto } = Astro.props;
 const d = proyecto.data;
 const { Content } = await render(proyecto);
-const etiquetas = { web: 'Sitio web', software: 'App / software', robotica: 'Robótica' };
+const etiquetas = { web: 'Aplicación web', software: 'Software a medida', robotica: 'Robótica' };
 ---
 <Base titulo={d.titulo} descripcion={d.resumen}>
   <article class="section">
-    <div class="container detalle">
-      <a href="/proyectos/" class="volver">← Todos los proyectos</a>
-      <p class="eyebrow">{etiquetas[d.categoria]} · {d.anio}</p>
-      <h1>{d.titulo}</h1>
-      <p class="resumen">{d.resumen}</p>
-      <ul class="tags">{d.tecnologias.map((t) => <li class="tag">{t}</li>)}</ul>
-      {(d.demo || d.repo) && (
-        <div class="acciones">
-          {d.demo && <a class="btn btn-primary" href={d.demo} target="_blank" rel="noopener">Ver online</a>}
-          {d.repo && <a class="btn" href={d.repo} target="_blank" rel="noopener">Ver código</a>}
-        </div>
-      )}
+    <div class="container">
+      <a href="/proyectos/" class="volver">← Todos los trabajos</a>
+      <header class="encabezado">
+        <p class="eyebrow">{etiquetas[d.categoria]}</p>
+        <h1>{d.titulo}</h1>
+        <p class="resumen">{d.resumen}</p>
+        {(d.demo || d.repo) && (
+          <div class="acciones">
+            {d.demo && <a class="btn btn-primary" href={d.demo} target="_blank" rel="noopener">Ver online ↗</a>}
+            {d.repo && <a class="btn" href={d.repo} target="_blank" rel="noopener">Ver código ↗</a>}
+          </div>
+        )}
+      </header>
+
       {d.imagen && (
         <div class:list={['imagen', { contener: d.imagenAjuste === 'contener' }]}>
           <Image src={d.imagen} alt={`Captura de ${d.titulo}`} width={1100} />
         </div>
       )}
-      <div class="contenido"><Content /></div>
+
+      <div class="cuerpo">
+        <div class="contenido">
+          <h2>El proyecto</h2>
+          <Content />
+          {d.aspectos.length > 0 && (
+            <>
+              <h2>Lo más importante</h2>
+              <ul class="aspectos">{d.aspectos.map((a) => <li>{a}</li>)}</ul>
+            </>
+          )}
+        </div>
+        <aside class="ficha" aria-label="Ficha técnica">
+          <dl>
+            <div><dt>Rol</dt><dd>{d.rol}</dd></div>
+            <div><dt>Tipo</dt><dd>{etiquetas[d.categoria]}</dd></div>
+            <div><dt>Año</dt><dd>{d.anio}</dd></div>
+            <div>
+              <dt>Tecnologías</dt>
+              <dd><ul class="tags">{d.tecnologias.map((t) => <li class="tag">{t}</li>)}</ul></dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+
+      <div class="cierre">
+        <p>¿Necesitás algo parecido para tu negocio?</p>
+        <a class="btn btn-primary" href="/#contacto">Hablemos</a>
+      </div>
     </div>
   </article>
 </Base>
 
 <style>
-  .detalle { max-width: 860px; }
   .volver { display: inline-block; margin-bottom: 28px; color: var(--muted); font-size: 0.92rem; }
-  h1 { font-size: clamp(2rem, 5vw, 3rem); }
-  .resumen { font-size: 1.15rem; color: var(--muted); margin: 0 0 20px; }
-  .tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0 0 28px; }
-  .acciones { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; }
-  .imagen { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--bg-2); margin-bottom: 36px; }
-  .imagen.contener { display: grid; place-items: center; padding: 24px; }
-  .imagen.contener :global(img) { max-height: 520px; width: auto; }
-  .contenido :global(p) { margin: 0 0 1.1em; }
-  .contenido :global(strong) { color: var(--green); font-weight: 600; }
-  .contenido :global(code) { font-family: var(--font-mono); font-size: 0.9em; background: var(--surface-2); padding: 2px 6px; border-radius: 6px; }
+  .encabezado { max-width: 760px; }
+  h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); }
+  .resumen { font-size: 1.2rem; color: var(--muted); margin: 0 0 24px; }
+  .acciones { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+  .imagen { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--bg-2); margin: 8px 0 48px; }
+  .imagen.contener { display: grid; place-items: center; padding: 32px; }
+  .imagen.contener :global(img) { max-height: 380px; width: auto; }
+  .cuerpo { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 56px; align-items: start; }
+  .contenido h2 { font-size: 1.3rem; margin: 0 0 14px; }
+  .contenido h2:not(:first-child) { margin-top: 36px; }
+  .contenido :global(p) { margin: 0 0 1.1em; color: #c9d5e6; }
+  .contenido :global(strong) { color: var(--text); font-weight: 600; }
+  .aspectos { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .aspectos li { padding-left: 26px; position: relative; color: #c9d5e6; }
+  .aspectos li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+  .ficha { position: sticky; top: 96px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+  dl { margin: 0; display: grid; gap: 18px; }
+  dt { font-family: var(--font-mono); font-size: 0.75rem; color: var(--orange); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  dd { margin: 0; font-size: 0.95rem; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 4px 0 0; }
+  .cierre { margin-top: 64px; padding: 28px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .cierre p { margin: 0; font-family: var(--font-display); font-size: 1.15rem; }
+  @media (max-width: 860px) {
+    .cuerpo { grid-template-columns: 1fr; gap: 32px; }
+    .ficha { position: static; }
+  }
 </style>

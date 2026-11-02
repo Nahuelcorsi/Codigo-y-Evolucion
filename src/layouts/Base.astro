@@ -2,12 +2,21 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { sitio } from '../data/sitio';
+import { sitio, contacto } from '../data/sitio';
 
 interface Props { titulo?: string; descripcion?: string; }
 const { titulo, descripcion = sitio.descripcion } = Astro.props;
 const tituloCompleto = titulo ? `${titulo} · ${sitio.nombre}` : `${sitio.nombre} · ${sitio.autor}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const persona = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: sitio.autor,
+  jobTitle: sitio.rol,
+  url: Astro.site?.toString(),
+  address: { '@type': 'PostalAddress', addressLocality: 'Buenos Aires', addressCountry: 'AR' },
+  sameAs: contacto.map((c) => c.url),
+};
 ---
 <!doctype html>
 <html lang="es">
@@ -24,7 +33,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={descripcion} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL('/apple-touch-icon.png', Astro.site)} />
+    <meta property="og:image" content={new URL('/og.jpg', Astro.site)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="es_AR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="author" content={sitio.autor} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <script type="application/ld+json" set:html={JSON.stringify(persona)} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -33,8 +49,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     />
   </head>
   <body>
+    <a href="#contenido" class="saltar">Saltar al contenido</a>
     <Header />
-    <main>
+    <main id="contenido">
       <slot />
     </main>
     <Footer />

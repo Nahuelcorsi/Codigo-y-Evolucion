@@ -5,6 +5,11 @@ categoria: software
 tecnologias: [C++, Mixxx, Android]
 imagen: ../../assets/proyectos/mixxx-beatmatch.png
 imagenAjuste: contener
+rol: "Proyecto personal: parches en C++ y app de Android"
+aspectos:
+  - "Modificaciones sobre el código de Mixxx 2.5.6"
+  - "App de Android que muestra el desfase en tiempo real"
+  - "Modo que mide el desfase escuchando los bombos"
 destacado: true
 orden: 4
 anio: 2026

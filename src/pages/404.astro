@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base titulo="Página no encontrada">
+  <section class="section">
+    <div class="container error">
+      <p class="eyebrow">error 404</p>
+      <h1 class="section-title">Esta página no existe</h1>
+      <p class="lead">Puede que el link esté mal escrito o que la página se haya movido.</p>
+      <a class="btn btn-primary" href="/">Volver al inicio</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .error { text-align: center; min-height: 40vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+</style>

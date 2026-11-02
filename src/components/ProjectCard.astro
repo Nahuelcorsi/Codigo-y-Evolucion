@@ -5,7 +5,7 @@ import type { CollectionEntry } from 'astro:content';
 interface Props { proyecto: CollectionEntry<'proyectos'>; }
 const { proyecto } = Astro.props;
 const d = proyecto.data;
-const etiquetas = { web: 'Web', software: 'Software', robotica: 'Robótica' };
+const etiquetas = { web: 'Aplicación web', software: 'Software a medida', robotica: 'Robótica' };
 ---
 <article class="card" data-categoria={d.categoria}>
   <a href={`/proyectos/${proyecto.id}/`} class="media" tabindex="-1" aria-hidden="true">

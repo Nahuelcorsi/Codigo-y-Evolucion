@@ -5,6 +5,12 @@ categoria: software
 tecnologias: [Python, CustomTkinter, PostgreSQL, SQLite, HTML, Tailwind, Cloudflare]
 imagen: ../../assets/proyectos/hierros-nahuel.png
 imagenAjuste: contener
+rol: "Negocio propio: diseño, desarrollo, base de datos e implementación"
+aspectos:
+  - "Tienda online con carrito y pedidos por WhatsApp"
+  - "Sistema de escritorio usado a diario por varias PCs en red"
+  - "Si el servidor se cae, sigue funcionando con una base local"
+  - "Presupuestos en PDF, exportación a Excel y lectura por OCR"
 destacado: true
 orden: 1
 anio: 2026

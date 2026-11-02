@@ -80,6 +80,9 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; margin: 0 0 0.
 
 .grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); }
 
+.saltar { position: absolute; left: 16px; top: -60px; z-index: 20; padding: 10px 16px; border-radius: 8px; background: var(--green); color: #04120a; font-weight: 600; }
+.saltar:focus { top: 12px; }
+
 :focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; border-radius: 6px; }
 
 @media (prefers-reduced-motion: reduce) {

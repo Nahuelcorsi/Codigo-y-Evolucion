@@ -11,6 +11,8 @@ const proyectos = defineCollection({
       resumen: z.string(),
       categoria: z.enum(['web', 'software', 'robotica']),
       tecnologias: z.array(z.string()),
+      rol: z.string().default('Diseño, desarrollo y publicación'),
+      aspectos: z.array(z.string()).default([]),
       imagen: image().optional(),
       imagenAjuste: z.enum(['cubrir', 'contener']).default('cubrir'),
       demo: z.string().url().optional(),
