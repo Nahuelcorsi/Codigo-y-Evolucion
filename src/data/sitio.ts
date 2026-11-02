@@ -15,7 +15,6 @@ export const sitio = {
 
 export const contacto = [
   { nombre: 'GitHub', url: 'https://github.com/Nahuelcorsi' },
-  { nombre: 'LinkedIn', url: 'https://ar.linkedin.com/in/nahuel-corsi-57b582245' },
   { nombre: 'Instagram', url: 'https://www.instagram.com/nahuelcorsi_/' },
   { nombre: 'X', url: 'https://x.com/NahuelCorsi_' },
   // { nombre: 'Email', url: 'mailto:tu@mail.com' },
@@ -23,8 +22,28 @@ export const contacto = [
 ];
 
 export const habilidades = [
-  { grupo: 'Frontend', items: ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'Tailwind', 'Astro'] },
-  { grupo: 'Backend y datos', items: ['Python', 'Node.js', 'NestJS', 'PostgreSQL', 'SQLite', 'Prisma'] },
-  { grupo: 'Apps', items: ['Flutter', 'Android', 'Python de escritorio (CustomTkinter)', 'C++'] },
-  { grupo: 'Herramientas', items: ['Git y GitHub', 'Cloudflare', 'Netlify', 'Linux / Termux'] },
+  {
+    grupo: 'Frontend',
+    items: ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'Tailwind CSS', 'Astro', 'Three.js (3D)', 'Diseño responsive', 'Web Speech API'],
+  },
+  {
+    grupo: 'Backend y datos',
+    items: ['Python', 'Node.js', 'NestJS', 'Prisma', 'PostgreSQL', 'SQLite', 'Cloudflare D1', 'APIs REST', 'Google Apps Script'],
+  },
+  {
+    grupo: 'Apps y escritorio',
+    items: ['Flutter', 'Android (Java)', 'CustomTkinter', 'C++', 'Mixxx', 'PDF con ReportLab', 'Excel con openpyxl', 'OCR'],
+  },
+  {
+    grupo: 'Automatización y hogar',
+    items: ['Termux', 'Domótica Tuya / Smart Life', 'Control por red local', 'Comandos de voz', 'Scripts en Python'],
+  },
+  {
+    grupo: 'Deploy y herramientas',
+    items: ['Git', 'GitHub', 'GitHub Actions', 'Cloudflare Workers', 'Cloudflare Pages', 'Wrangler', 'Netlify', 'Linux'],
+  },
+  {
+    grupo: 'Forma de trabajo',
+    items: ['Versionado semántico', 'Changelog', 'Tests automáticos', 'Documentación', 'Proyectos reales para clientes'],
+  },
 ];

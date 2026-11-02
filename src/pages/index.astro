@@ -23,7 +23,10 @@ const destacados = (await getCollection('proyectos', (p) => p.data.destacado))
         </div>
       </div>
       <div class="hero-logo">
-        <Image src={logo} alt="Logo de Código y Evolución: un cerebro de redes con los símbolos de código y un brote que crece" width={420} height={420} loading="eager" />
+        <button type="button" class="logo-btn" id="logo-giro" aria-pressed="false" aria-label="Hacer girar el logo">
+          <Image src={logo} alt="Logo de Código y Evolución: un cerebro de redes con los símbolos de código y un brote que crece" width={420} height={420} loading="eager" />
+        </button>
+        <p class="pista" aria-hidden="true">tocá el logo</p>
       </div>
     </div>
   </section>
@@ -79,6 +82,45 @@ const destacados = (await getCollection('proyectos', (p) => p.data.destacado))
   </section>
 </Base>
 
+<script>
+  // Al tocar el logo empieza a girar (acelera de a poco). Al tocarlo de nuevo frena suave y vuelve a quedar derecho.
+  const boton = document.getElementById('logo-giro');
+  const img = boton?.querySelector('img');
+  if (boton && img) {
+    const menosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const VELOCIDAD = 300; // grados por segundo
+    let angulo = 0, velocidad = 0, objetivo = 0, ultimo = 0, corriendo = false;
+
+    const paso = (t: number) => {
+      const dt = Math.min((t - ultimo) / 1000, 0.05);
+      ultimo = t;
+      velocidad += (objetivo - velocidad) * Math.min(dt * 2.5, 1);
+      if (objetivo === 0 && velocidad < 40) {
+        // Frenando: termina la vuelta y queda derecho.
+        const destino = Math.ceil(angulo / 360) * 360;
+        angulo += (destino - angulo) * Math.min(dt * 4, 1);
+        if (destino - angulo < 0.3) { angulo = 0; velocidad = 0; corriendo = false; }
+      } else {
+        angulo += velocidad * dt;
+      }
+      img.style.transform = `rotate(${angulo}deg)`;
+      if (corriendo) requestAnimationFrame(paso);
+    };
+
+    boton.addEventListener('click', () => {
+      const activo = boton.getAttribute('aria-pressed') !== 'true';
+      boton.setAttribute('aria-pressed', String(activo));
+      if (menosMovimiento) {
+        img.animate([{ transform: 'rotate(0deg)' }, { transform: 'rotate(360deg)' }], { duration: 600 });
+        boton.setAttribute('aria-pressed', 'false');
+        return;
+      }
+      objetivo = activo ? VELOCIDAD : 0;
+      if (!corriendo) { corriendo = true; ultimo = performance.now(); requestAnimationFrame(paso); }
+    });
+  }
+</script>
+
 <style>
   .hero { padding: 72px 0 88px; }
   .hero-inner { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; }
@@ -88,8 +130,22 @@ const destacados = (await getCollection('proyectos', (p) => p.data.destacado))
   .frase { font-size: 1.25rem; max-width: 34ch; margin: 0 0 12px; }
   .rol { color: var(--muted); font-family: var(--font-mono); font-size: 0.9rem; margin: 0 0 32px; }
   .acciones { display: flex; gap: 12px; flex-wrap: wrap; }
-  .hero-logo { display: grid; place-items: center; }
-  .hero-logo :global(img) { width: min(420px, 100%); filter: drop-shadow(0 0 60px rgba(95, 211, 141, 0.25)); animation: flotar 6s ease-in-out infinite; }
+  .hero-logo { display: grid; place-items: center; gap: 10px; }
+  .logo-btn {
+    all: unset; cursor: pointer; display: block; width: min(420px, 100%);
+    border-radius: 50%; animation: flotar 6s ease-in-out infinite;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .logo-btn:focus-visible { outline: 2px solid var(--orange); outline-offset: 8px; }
+  .logo-btn :global(img) {
+    width: 100%; border-radius: 50%; will-change: transform;
+    filter: drop-shadow(0 0 60px rgba(95, 211, 141, 0.25));
+    transition: filter .4s ease;
+  }
+  .logo-btn:hover :global(img) { filter: drop-shadow(0 0 70px rgba(95, 211, 141, 0.4)); }
+  .logo-btn[aria-pressed='true'] :global(img) { filter: drop-shadow(0 0 90px rgba(127, 216, 232, 0.55)); }
+  .pista { margin: 0; font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); opacity: 0.7; }
+  .pista::before { content: '> '; color: var(--orange); }
   @keyframes flotar { 50% { transform: translateY(-10px); } }
 
   .sobre { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; }
@@ -98,7 +154,7 @@ const destacados = (await getCollection('proyectos', (p) => p.data.destacado))
 
   .ver-todos { margin: 40px 0 0; text-align: center; }
 
-  .skills { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); margin-top: 32px; }
+  .skills { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); margin-top: 32px; }
   .skill { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
   .skill h3 { font-size: 1rem; color: var(--green); }
   .skill ul { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
@@ -111,6 +167,6 @@ const destacados = (await getCollection('proyectos', (p) => p.data.destacado))
     .hero { padding: 40px 0 64px; }
     .hero-inner, .sobre { grid-template-columns: 1fr; gap: 28px; }
     .hero-logo { order: -1; }
-    .hero-logo :global(img) { width: min(240px, 70%); }
+    .logo-btn { width: min(240px, 70%); }
   }
 </style>
