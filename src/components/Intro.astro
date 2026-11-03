@@ -1,9 +1,15 @@
 ---
+// Intro de la portada: el logo gira como una moneda y después se desarma por partes:
+// la hoja crece y se va para arriba, los corchetes salen disparados a los costados
+// y el resto del logo se achica y desaparece mientras aparece la página.
+// (La variante anterior, con el logo partido en pedazos, está en IntroPedazos.astro.)
 import { Image } from 'astro:assets';
-import logo from '../assets/logo.png';
+import base from '../assets/intro/logo-base.png';
+import izq from '../assets/intro/logo-izq.png';
+import der from '../assets/intro/logo-der.png';
+import hoja from '../assets/intro/logo-hoja.png';
 ---
 <script is:inline>
-  // La intro se muestra una sola vez por visita (pestaña). Sin JavaScript no aparece y la página se ve igual.
   (function () {
     try {
       if (sessionStorage.getItem('intro-vista')) return;
@@ -14,7 +20,10 @@ import logo from '../assets/logo.png';
 <div id="intro" class="intro" aria-hidden="true">
   <div class="escena">
     <div class="moneda">
-      <Image src={logo} alt="" width={260} height={260} loading="eager" />
+      <Image class="capa base" src={base} alt="" width={260} height={260} loading="eager" />
+      <Image class="capa izq" src={izq} alt="" width={260} height={260} loading="eager" />
+      <Image class="capa der" src={der} alt="" width={260} height={260} loading="eager" />
+      <Image class="capa hoja" src={hoja} alt="" width={260} height={260} loading="eager" />
     </div>
     <div class="brillo"></div>
   </div>
@@ -27,61 +36,20 @@ import logo from '../assets/logo.png';
   const raiz = document.documentElement;
   if (intro && raiz.classList.contains('con-intro')) {
     const rapida = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const moneda = intro.querySelector<HTMLElement>('.moneda');
-    const img = moneda?.querySelector('img');
     let cerrada = false;
-
     const terminar = (demora: number) => {
       try { sessionStorage.setItem('intro-vista', '1'); } catch (e) {}
       intro.classList.add('saliendo');
       setTimeout(() => { raiz.classList.remove('con-intro'); intro.remove(); }, demora);
     };
-
-    // El logo se parte en una grilla de pedazos que salen volando desde el centro.
-    const desarmar = () => {
-      if (!moneda || !img) return terminar(700);
-      const tam = moneda.getBoundingClientRect().width;
-      const N = 7;
-      const lado = tam / N;
-      const fuente = img.currentSrc || img.src;
-      const piezas = document.createElement('div');
-      piezas.className = 'piezas';
-      moneda.after(piezas);
-      moneda.style.visibility = 'hidden';
-      for (let f = 0; f < N; f++) {
-        for (let c = 0; c < N; c++) {
-          const cx = (c + 0.5) / N - 0.5;
-          const cy = (f + 0.5) / N - 0.5;
-          const dist = Math.hypot(cx, cy);
-          if (dist > 0.52) continue; // fuera del círculo del logo no hay nada que mostrar
-          const pieza = document.createElement('span');
-          pieza.style.cssText = `left:${c * lado}px;top:${f * lado}px;width:${lado + 0.5}px;height:${lado + 0.5}px;` +
-            `background-image:url("${fuente}");background-size:${tam}px ${tam}px;background-position:${-c * lado}px ${-f * lado}px;`;
-          piezas.appendChild(pieza);
-          const ang = Math.atan2(cy, cx) + (Math.random() - 0.5) * 0.6;
-          const fuerza = 160 + Math.random() * 260;
-          const dx = Math.cos(ang) * fuerza;
-          const dy = Math.sin(ang) * fuerza + 60 + Math.random() * 80; // un poco de caída
-          pieza.animate(
-            [
-              { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
-              { transform: `translate(${dx}px,${dy}px) rotate(${(Math.random() - 0.5) * 540}deg) scale(${0.4 + Math.random() * 0.4})`, opacity: 0 },
-            ],
-            { duration: 900 + Math.random() * 400, delay: (0.5 - dist) * 260, easing: 'cubic-bezier(.2,.6,.3,1)', fill: 'forwards' }
-          );
-        }
-      }
-      intro.classList.add('desarmando');
-      setTimeout(() => terminar(1100), 350);
-    };
-
     const cerrar = () => {
       if (cerrada) return;
       cerrada = true;
       if (rapida) return terminar(700);
-      desarmar();
+      intro.classList.add('desarmando');
+      setTimeout(() => terminar(1000), 700);
     };
-    setTimeout(cerrar, rapida ? 900 : 2700);
+    setTimeout(cerrar, rapida ? 900 : 2500);
     intro.addEventListener('click', cerrar);
     window.addEventListener('keydown', cerrar, { once: true });
   }
@@ -91,21 +59,23 @@ import logo from '../assets/logo.png';
   .intro { display: none; }
   :global(html.con-intro) { overflow: hidden; }
   :global(html.con-intro) .intro {
-    position: fixed; inset: 0; z-index: 100;
+    position: fixed; inset: 0; z-index: 100; isolation: isolate;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
-    cursor: pointer;
-    transition: opacity .7s ease, visibility .7s ease;
+    cursor: pointer; overflow: hidden;
   }
   .intro::before {
     content: ''; position: absolute; inset: 0; z-index: -1;
     background: radial-gradient(500px 400px at 50% 45%, rgba(95, 211, 141, 0.10), transparent 70%), var(--bg);
     transition: opacity .9s ease;
   }
-  :global(html.con-intro) .intro { isolation: isolate; }
+  .intro.saliendo { pointer-events: none; }
   .intro.saliendo::before { opacity: 0; }
+  .intro.saliendo:not(.desarmando) { opacity: 0; transition: opacity .7s ease; }
+
   .escena { position: relative; width: min(260px, 60vw); aspect-ratio: 1; perspective: 900px; }
-  .moneda { width: 100%; height: 100%; transform-style: preserve-3d; animation: girar 2s cubic-bezier(.2, .7, .2, 1) both; }
-  .moneda :global(img) { width: 100%; height: 100%; border-radius: 50%; filter: drop-shadow(0 0 40px rgba(95, 211, 141, 0.35)); }
+  .moneda { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; animation: girar 2s cubic-bezier(.2, .7, .2, 1) both; }
+  .moneda :global(.capa) { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .moneda :global(.base) { filter: drop-shadow(0 0 40px rgba(95, 211, 141, 0.35)); }
   .brillo {
     position: absolute; inset: -18%; border-radius: 50%; pointer-events: none;
     background: radial-gradient(circle, rgba(127, 216, 232, 0.35), transparent 60%);
@@ -122,12 +92,18 @@ import logo from '../assets/logo.png';
     font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); opacity: 0;
     animation: aparecer .5s ease .8s both;
   }
-  .intro.saliendo { pointer-events: none; }
-  .intro.saliendo:not(.desarmando) { opacity: 0; }
-  .intro.desarmando .marca, .intro.desarmando .saltar-intro { opacity: 0; transition: opacity .4s ease; animation: none; }
-  .intro.desarmando .brillo { animation: none; opacity: 0; }
-  .escena :global(.piezas) { position: absolute; inset: 0; }
-  .escena :global(.piezas span) { position: absolute; background-repeat: no-repeat; will-change: transform, opacity; }
+
+  /* Desarme */
+  .desarmando .moneda { animation: none; transform: none; }
+  .desarmando .brillo { animation: none; opacity: 0; }
+  .desarmando .marca, .desarmando .saltar-intro { animation: none; opacity: 0; transition: opacity .35s ease; }
+  .desarmando .moneda :global(.izq) { animation: corchete-izq 1.1s cubic-bezier(.5, -0.3, .7, 1) forwards; }
+  .desarmando .moneda :global(.der) { animation: corchete-der 1.1s cubic-bezier(.5, -0.3, .7, 1) .08s forwards; }
+  .desarmando .moneda :global(.hoja) {
+    transform-origin: 62% 34%;
+    animation: hoja-crece 1.3s cubic-bezier(.3, .1, .3, 1) forwards;
+  }
+  .desarmando .moneda :global(.base) { animation: base-sale .8s ease .45s forwards; }
 
   @keyframes girar {
     0% { transform: rotateY(0deg) scale(0.4); opacity: 0; }
@@ -142,6 +118,28 @@ import logo from '../assets/logo.png';
   @keyframes aparecer {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: none; }
+  }
+  /* Los corchetes toman impulso hacia adentro, saltan y salen girando a los costados */
+  @keyframes corchete-izq {
+    0% { transform: translate(0, 0) rotate(0); }
+    18% { transform: translate(14%, 0) scale(0.9, 1.08); }
+    45% { transform: translate(-40%, -18%) rotate(-140deg); opacity: 1; }
+    100% { transform: translate(-260%, 30%) rotate(-540deg); opacity: 0; }
+  }
+  @keyframes corchete-der {
+    0% { transform: translate(0, 0) rotate(0); }
+    18% { transform: translate(-14%, 0) scale(0.9, 1.08); }
+    45% { transform: translate(40%, -18%) rotate(140deg); opacity: 1; }
+    100% { transform: translate(260%, 30%) rotate(540deg); opacity: 0; }
+  }
+  /* La hoja crece desde su tallo, brilla y se va flotando hacia arriba */
+  @keyframes hoja-crece {
+    0% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(127, 216, 232, 0)); opacity: 1; }
+    40% { transform: scale(1.9) rotate(-8deg); filter: drop-shadow(0 0 18px rgba(127, 216, 232, 0.8)); opacity: 1; }
+    100% { transform: translate(-6%, -170%) scale(2.4) rotate(6deg); filter: drop-shadow(0 0 24px rgba(127, 216, 232, 0.6)); opacity: 0; }
+  }
+  @keyframes base-sale {
+    to { transform: scale(0.7); opacity: 0; }
   }
   @media (prefers-reduced-motion: reduce) {
     .moneda, .brillo, .marca, .saltar-intro { animation: none; opacity: 1; }
