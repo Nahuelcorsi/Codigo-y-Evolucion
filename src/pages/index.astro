@@ -6,11 +6,13 @@ import ProjectCard from '../components/ProjectCard.astro';
 import logo from '../assets/logo.png';
 import { sitio, contacto, habilidades, servicios, proceso, linkWhatsapp } from '../data/sitio';
 import IconoWhatsapp from '../components/IconoWhatsapp.astro';
+import Intro from '../components/Intro.astro';
 
 const destacados = (await getCollection('proyectos', (p) => p.data.destacado))
   .sort((a, b) => a.data.orden - b.data.orden);
 ---
 <Base>
+  <Intro />
   <section class="hero">
     <div class="container hero-inner">
       <div class="hero-text">
