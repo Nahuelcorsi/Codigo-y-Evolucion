@@ -26,16 +26,62 @@ import logo from '../assets/logo.png';
   const intro = document.getElementById('intro');
   const raiz = document.documentElement;
   if (intro && raiz.classList.contains('con-intro')) {
+    const rapida = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const moneda = intro.querySelector<HTMLElement>('.moneda');
+    const img = moneda?.querySelector('img');
     let cerrada = false;
+
+    const terminar = (demora: number) => {
+      try { sessionStorage.setItem('intro-vista', '1'); } catch (e) {}
+      intro.classList.add('saliendo');
+      setTimeout(() => { raiz.classList.remove('con-intro'); intro.remove(); }, demora);
+    };
+
+    // El logo se parte en una grilla de pedazos que salen volando desde el centro.
+    const desarmar = () => {
+      if (!moneda || !img) return terminar(700);
+      const tam = moneda.getBoundingClientRect().width;
+      const N = 7;
+      const lado = tam / N;
+      const fuente = img.currentSrc || img.src;
+      const piezas = document.createElement('div');
+      piezas.className = 'piezas';
+      moneda.after(piezas);
+      moneda.style.visibility = 'hidden';
+      for (let f = 0; f < N; f++) {
+        for (let c = 0; c < N; c++) {
+          const cx = (c + 0.5) / N - 0.5;
+          const cy = (f + 0.5) / N - 0.5;
+          const dist = Math.hypot(cx, cy);
+          if (dist > 0.52) continue; // fuera del círculo del logo no hay nada que mostrar
+          const pieza = document.createElement('span');
+          pieza.style.cssText = `left:${c * lado}px;top:${f * lado}px;width:${lado + 0.5}px;height:${lado + 0.5}px;` +
+            `background-image:url("${fuente}");background-size:${tam}px ${tam}px;background-position:${-c * lado}px ${-f * lado}px;`;
+          piezas.appendChild(pieza);
+          const ang = Math.atan2(cy, cx) + (Math.random() - 0.5) * 0.6;
+          const fuerza = 160 + Math.random() * 260;
+          const dx = Math.cos(ang) * fuerza;
+          const dy = Math.sin(ang) * fuerza + 60 + Math.random() * 80; // un poco de caída
+          pieza.animate(
+            [
+              { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+              { transform: `translate(${dx}px,${dy}px) rotate(${(Math.random() - 0.5) * 540}deg) scale(${0.4 + Math.random() * 0.4})`, opacity: 0 },
+            ],
+            { duration: 900 + Math.random() * 400, delay: (0.5 - dist) * 260, easing: 'cubic-bezier(.2,.6,.3,1)', fill: 'forwards' }
+          );
+        }
+      }
+      intro.classList.add('desarmando');
+      setTimeout(() => terminar(1100), 350);
+    };
+
     const cerrar = () => {
       if (cerrada) return;
       cerrada = true;
-      try { sessionStorage.setItem('intro-vista', '1'); } catch (e) {}
-      intro.classList.add('saliendo');
-      setTimeout(() => { raiz.classList.remove('con-intro'); intro.remove(); }, 700);
+      if (rapida) return terminar(700);
+      desarmar();
     };
-    const rapida = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    setTimeout(cerrar, rapida ? 900 : 2900);
+    setTimeout(cerrar, rapida ? 900 : 2700);
     intro.addEventListener('click', cerrar);
     window.addEventListener('keydown', cerrar, { once: true });
   }
@@ -47,12 +93,16 @@ import logo from '../assets/logo.png';
   :global(html.con-intro) .intro {
     position: fixed; inset: 0; z-index: 100;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
-    background:
-      radial-gradient(500px 400px at 50% 45%, rgba(95, 211, 141, 0.10), transparent 70%),
-      var(--bg);
     cursor: pointer;
     transition: opacity .7s ease, visibility .7s ease;
   }
+  .intro::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: radial-gradient(500px 400px at 50% 45%, rgba(95, 211, 141, 0.10), transparent 70%), var(--bg);
+    transition: opacity .9s ease;
+  }
+  :global(html.con-intro) .intro { isolation: isolate; }
+  .intro.saliendo::before { opacity: 0; }
   .escena { position: relative; width: min(260px, 60vw); aspect-ratio: 1; perspective: 900px; }
   .moneda { width: 100%; height: 100%; transform-style: preserve-3d; animation: girar 2s cubic-bezier(.2, .7, .2, 1) both; }
   .moneda :global(img) { width: 100%; height: 100%; border-radius: 50%; filter: drop-shadow(0 0 40px rgba(95, 211, 141, 0.35)); }
@@ -72,8 +122,12 @@ import logo from '../assets/logo.png';
     font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); opacity: 0;
     animation: aparecer .5s ease .8s both;
   }
-  .intro.saliendo { opacity: 0; visibility: hidden; }
-  .intro.saliendo .moneda { transform: scale(1.25); filter: blur(6px); transition: transform .7s ease, filter .7s ease; animation: none; }
+  .intro.saliendo { pointer-events: none; }
+  .intro.saliendo:not(.desarmando) { opacity: 0; }
+  .intro.desarmando .marca, .intro.desarmando .saltar-intro { opacity: 0; transition: opacity .4s ease; animation: none; }
+  .intro.desarmando .brillo { animation: none; opacity: 0; }
+  .escena :global(.piezas) { position: absolute; inset: 0; }
+  .escena :global(.piezas span) { position: absolute; background-repeat: no-repeat; will-change: transform, opacity; }
 
   @keyframes girar {
     0% { transform: rotateY(0deg) scale(0.4); opacity: 0; }
