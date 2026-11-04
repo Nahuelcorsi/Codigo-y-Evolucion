@@ -6,6 +6,25 @@ tecnologias: [HTML, JavaScript, Python, Termux, Tuya]
 imagen: ../../assets/proyectos/panel-luces.png
 imagenAjuste: contener
 repo: https://github.com/Nahuelcorsi/panel-luces
+rol: "Proyecto personal: hardware reciclado, servidor y panel web"
+aspectos:
+  - "Controla luces inteligentes por la red local, sin la nube"
+  - "Corre en un celular Android viejo con Termux"
+  - "Escenas, despertador con amanecer y modo noche"
+  - "Comandos por voz en español"
+galeria:
+  - src: ../../assets/proyectos/panel-1.png
+    alt: "Luz en blanco cálido con brillo y color"
+    movil: true
+  - src: ../../assets/proyectos/panel-2.png
+    alt: "Control de una luz: encendido, brillo y color"
+    movil: true
+  - src: ../../assets/proyectos/panel-4.png
+    alt: "Hora de salida al trabajo según el tráfico en vivo"
+    movil: true
+  - src: ../../assets/proyectos/panel-7.png
+    alt: "Modo noche con la hora de salida"
+    movil: true
 destacado: true
 orden: 3
 anio: 2026

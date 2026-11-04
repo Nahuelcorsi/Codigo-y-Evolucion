@@ -1,0 +1,24 @@
+---
+import IconoWhatsapp from './IconoWhatsapp.astro';
+import { linkWhatsapp } from '../data/sitio';
+---
+<a class="wa-flotante" href={linkWhatsapp()} target="_blank" rel="noopener" aria-label="Escribime por WhatsApp">
+  <IconoWhatsapp size={24} />
+  <span>WhatsApp</span>
+</a>
+
+<style>
+  .wa-flotante {
+    position: fixed; z-index: 35;
+    right: calc(16px + env(safe-area-inset-right, 0px));
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px 16px 13px 14px;
+    background: #25d366; color: #062b14; text-decoration: none;
+    font-family: var(--font-mono); font-weight: 500; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase;
+    box-shadow: 6px 6px 0 rgba(37, 211, 102, 0.25);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .wa-flotante:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 rgba(37, 211, 102, 0.35); }
+  @media (max-width: 640px) { .wa-flotante span { display: none; } .wa-flotante { padding: 14px; } }
+</style>

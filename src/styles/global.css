@@ -1,88 +1,130 @@
-/* Colores tomados del logo: azul marino, verde, celeste y naranja. */
+/*
+  Código & Evolución — dirección visual "lámina técnica".
+  La página está dibujada como un plano: papel cuadriculado, cotas, rótulos
+  y lista de materiales. Mezcla los dos oficios de Nahuel: el código y el hierro.
+  Colores del logo: azul, verde y naranja sobre tinta azul marino.
+*/
 :root {
-  --bg: #0a111e;
-  --bg-2: #0f1828;
-  --surface: #131e32;
-  --surface-2: #1a2740;
-  --border: #24344f;
-  --text: #e6edf6;
-  --muted: #9aabc4;
-  --green: #5fd38d;
-  --green-2: #3fa86b;
-  --blue: #6f9fe0;
-  --cyan: #7fd8e8;
-  --orange: #f2996b;
-  --radius: 14px;
-  --max: 1120px;
-  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-display: 'Montserrat', var(--font);
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --tinta: #08101c;
+  --tinta-2: #0c1626;
+  --papel: #e9eef4;
+  --texto: #e9eef4;
+  --tenue: #8796ad;
+  --linea: rgba(150, 180, 220, 0.16);
+  --linea-fuerte: rgba(150, 180, 220, 0.34);
+  --grilla: rgba(120, 160, 210, 0.055);
+  --grilla-mayor: rgba(120, 160, 210, 0.1);
+  --verde: #63d690;
+  --azul: #78a6e6;
+  --naranja: #f39a6a;
+  --max: 1240px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --font: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
   color-scheme: dark;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
 
 body {
   margin: 0;
-  background:
-    radial-gradient(1200px 600px at 85% -10%, rgba(242, 153, 107, 0.08), transparent 60%),
-    radial-gradient(1000px 600px at -10% 10%, rgba(95, 211, 141, 0.07), transparent 60%),
-    var(--bg);
-  color: var(--text);
+  background-color: var(--tinta);
+  background-image:
+    linear-gradient(var(--grilla-mayor) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grilla-mayor) 1px, transparent 1px),
+    linear-gradient(var(--grilla) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grilla) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+  background-position: -1px -1px;
+  color: var(--texto);
   font-family: var(--font);
   font-size: 17px;
-  line-height: 1.65;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
+
+::selection { background: var(--naranja); color: var(--tinta); }
 
 img { max-width: 100%; height: auto; display: block; }
-a { color: var(--green); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a { color: inherit; }
 
-h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; margin: 0 0 0.5em; letter-spacing: -0.01em; }
+h1, h2, h3 { margin: 0; font-weight: 700; }
 
-.container { width: min(var(--max), 100% - 32px); margin-inline: auto; }
+.container { width: min(var(--max), 100% - 2 * var(--gutter)); margin-inline: auto; }
 
-.section { padding: 88px 0; }
-.section + .section { border-top: 1px solid rgba(36, 52, 79, 0.6); }
-
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  color: var(--green);
-  margin: 0 0 10px;
+/* Rótulo de cada lámina: "LÁMINA 02 — SERVICIOS ........ ESC 1:1" */
+.lamina {
+  display: flex; align-items: center; gap: 14px;
+  font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--tenue);
+  margin: 0 0 28px;
 }
-.eyebrow::before { content: '// '; color: var(--muted); }
+.lamina b { color: var(--naranja); font-weight: 500; }
+.lamina::after { content: ''; flex: 1; height: 1px; background: var(--linea-fuerte); }
+.lamina .esc { order: 2; }
 
-.section-title { font-size: clamp(1.8rem, 4vw, 2.4rem); }
-.lead { color: var(--muted); max-width: 62ch; margin: 0 0 40px; }
+.titulo {
+  font-family: var(--font-display);
+  font-weight: 800; text-transform: uppercase;
+  font-size: clamp(2.6rem, 7.5vw, 6rem);
+  line-height: 0.88; letter-spacing: -0.005em;
+  margin: 0 0 24px;
+}
+.titulo em { font-style: normal; color: var(--verde); }
 
+.nota { font-family: var(--font-mono); font-size: 0.8rem; color: var(--tenue); }
+.nota::before { content: '* '; color: var(--naranja); }
+
+/* Botones con esquinas rectas y relleno que entra como rayado de corte */
 .btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 12px 20px; border-radius: 999px;
-  font-weight: 600; font-size: 0.95rem;
-  border: 1px solid var(--border);
-  color: var(--text); background: var(--surface);
-  transition: transform .15s ease, border-color .15s ease, background .15s ease;
+  position: relative; isolation: isolate;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 22px;
+  font-family: var(--font-mono); font-size: 0.86rem; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none;
+  color: var(--texto); border: 1px solid var(--linea-fuerte); background: transparent;
+  overflow: hidden; transition: color .25s ease, border-color .25s ease;
 }
-.btn:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--green-2); }
-.btn-primary { background: linear-gradient(135deg, var(--green-2), #2f8f86); border-color: transparent; color: #04120a; }
-.btn-primary:hover { border-color: transparent; }
+.btn::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background: var(--texto);
+  transform: scaleX(0); transform-origin: left; transition: transform .35s cubic-bezier(.7, 0, .2, 1);
+}
+.btn:hover { color: var(--tinta); border-color: var(--texto); }
+.btn:hover::before { transform: scaleX(1); }
+.btn-wa { background: var(--verde); color: var(--tinta); border-color: var(--verde); }
+.btn-wa::before { background: var(--texto); }
 
+/* Rayado de corte, como en los planos */
+.rayado {
+  background-image: repeating-linear-gradient(-45deg, var(--linea-fuerte) 0 1px, transparent 1px 7px);
+}
+
+/* Etiqueta tipo chapa estampada */
 .tag {
-  display: inline-block; font-family: var(--font-mono); font-size: 0.75rem;
-  padding: 3px 9px; border-radius: 999px;
-  background: rgba(111, 159, 224, 0.12); color: var(--cyan);
-  border: 1px solid rgba(111, 159, 224, 0.25);
+  display: inline-block; font-family: var(--font-mono); font-size: 0.74rem;
+  padding: 4px 9px; border: 1px solid var(--linea-fuerte); color: var(--papel);
+  letter-spacing: 0.02em;
 }
 
-.grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); }
+.saltar { position: absolute; left: 16px; top: -60px; z-index: 50; padding: 10px 16px; background: var(--verde); color: var(--tinta); font-weight: 600; }
+.saltar:focus { top: 12px; }
 
-:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; border-radius: 6px; }
+:focus-visible { outline: 2px solid var(--naranja); outline-offset: 3px; }
+
+/* Aparición al hacer scroll (la activa un script; sin JS todo se ve normal) */
+.js [data-aparece] { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1); }
+.js [data-aparece].visto { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  * { transition: none !important; animation: none !important; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  .js [data-aparece] { opacity: 1; transform: none; }
 }
+
+.lamina > * { white-space: nowrap; }
+@media (max-width: 480px) { .lamina .esc { display: none; } }

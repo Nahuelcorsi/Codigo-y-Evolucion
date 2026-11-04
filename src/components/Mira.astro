@@ -1,0 +1,69 @@
+---
+// La "mira" de tablero de dibujo: dos líneas finas siguen al mouse y abajo
+// se leen las coordenadas en milímetros, como en un programa de CAD.
+// Solo aparece con mouse (en celular no tiene sentido).
+// También maneja las apariciones al hacer scroll de toda la página.
+---
+<div class="mira" aria-hidden="true">
+  <span class="h"></span>
+  <span class="v"></span>
+</div>
+<p class="coords" aria-hidden="true"><span>X</span> <b id="cx">0000</b> <span>Y</span> <b id="cy">0000</b> <span>mm</span></p>
+
+<script>
+  const html = document.documentElement;
+
+  // Apariciones al hacer scroll
+  const items = document.querySelectorAll<HTMLElement>('[data-aparece]');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entradas) => {
+      for (const e of entradas) {
+        if (e.isIntersecting) { e.target.classList.add('visto'); io.unobserve(e.target); }
+      }
+    }, { rootMargin: '0px 0px -12% 0px' });
+    items.forEach((el) => io.observe(el));
+  } else {
+    items.forEach((el) => el.classList.add('visto'));
+  }
+
+  // Mira y coordenadas
+  if (matchMedia('(pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const mira = document.querySelector<HTMLElement>('.mira')!;
+    const cx = document.getElementById('cx')!;
+    const cy = document.getElementById('cy')!;
+    let x = 0, y = 0, pendiente = false;
+    const pintar = () => {
+      pendiente = false;
+      mira.style.setProperty('--x', `${x}px`);
+      mira.style.setProperty('--y', `${y}px`);
+      // 1 px ≈ 0,26 mm a 96 ppp; el número es de adorno, pero respeta la escala.
+      cx.textContent = String(Math.round(x * 0.2646)).padStart(4, '0');
+      cy.textContent = String(Math.round((y + scrollY) * 0.2646)).padStart(4, '0');
+    };
+    addEventListener('pointermove', (e) => {
+      x = e.clientX; y = e.clientY;
+      html.classList.add('con-mira');
+      if (!pendiente) { pendiente = true; requestAnimationFrame(pintar); }
+    }, { passive: true });
+    addEventListener('scroll', () => { if (!pendiente) { pendiente = true; requestAnimationFrame(pintar); } }, { passive: true });
+    document.addEventListener('pointerleave', () => html.classList.remove('con-mira'));
+  }
+</script>
+
+<style>
+  .mira { position: fixed; inset: 0; pointer-events: none; z-index: 40; opacity: 0; transition: opacity .3s ease; }
+  :global(.con-mira) .mira { opacity: 1; }
+  .mira span { position: absolute; background: rgba(243, 154, 106, 0.22); }
+  .h { left: 0; right: 0; height: 1px; top: 0; transform: translateY(var(--y, -10px)); }
+  .v { top: 0; bottom: 0; width: 1px; left: 0; transform: translateX(var(--x, -10px)); }
+  .coords {
+    position: fixed; left: 16px; bottom: 14px; z-index: 40; margin: 0;
+    font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: var(--tenue);
+    padding: 5px 9px; border: 1px solid var(--linea); background: rgba(8, 16, 28, 0.85);
+    opacity: 0; transition: opacity .3s ease; pointer-events: none;
+  }
+  .coords b { color: var(--papel); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .coords span { color: var(--naranja); }
+  :global(.con-mira) .coords { opacity: 1; }
+  @media (max-width: 820px) { .mira, .coords { display: none; } }
+</style>
