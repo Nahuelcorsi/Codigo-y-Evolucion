@@ -98,7 +98,7 @@ import logo from '../assets/logo.png';
   }
   .intro::before {
     content: ''; position: absolute; inset: 0; z-index: -1;
-    background: radial-gradient(500px 400px at 50% 45%, rgba(95, 211, 141, 0.10), transparent 70%), var(--bg);
+    background: radial-gradient(500px 400px at 50% 45%, rgba(95, 211, 141, 0.10), transparent 70%), var(--tinta);
     transition: opacity .9s ease;
   }
   :global(html.con-intro) .intro { isolation: isolate; }
@@ -113,13 +113,13 @@ import logo from '../assets/logo.png';
   }
   .marca {
     margin: 0; font-family: var(--font-display); font-weight: 800; text-transform: uppercase;
-    letter-spacing: 0.08em; font-size: clamp(1rem, 3.4vw, 1.4rem); color: var(--text);
+    letter-spacing: 0.08em; font-size: clamp(1rem, 3.4vw, 1.4rem); color: var(--texto);
     opacity: 0; animation: aparecer .7s ease 1.3s both;
   }
-  .marca b { color: var(--orange); }
+  .marca b { color: var(--naranja); }
   .saltar-intro {
     position: absolute; bottom: calc(28px + env(safe-area-inset-bottom, 0px)); margin: 0;
-    font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); opacity: 0;
+    font-family: var(--font-mono); font-size: 0.75rem; color: var(--tenue); opacity: 0;
     animation: aparecer .5s ease .8s both;
   }
   .intro.saliendo { pointer-events: none; }

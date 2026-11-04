@@ -1,21 +1,53 @@
 ---
+// El pie es el rótulo del plano: el cuadro con los datos que va en la esquina de cada lámina.
 import { sitio, contacto } from '../data/sitio';
-const anio = new Date().getFullYear();
+const hoy = new Date();
+const fecha = `${String(hoy.getMonth() + 1).padStart(2, '0')}/${hoy.getFullYear()}`;
 ---
 <footer class="footer">
-  <div class="container inner">
-    <p>© {anio} {sitio.autor} · {sitio.nombre}</p>
-    <ul>
-      {contacto.map((c) => <li><a href={c.url} target="_blank" rel="noopener">{c.nombre}</a></li>)}
-    </ul>
+  <div class="container">
+    <div class="rotulo">
+      <div class="celda grande">
+        <span class="et">Proyecto</span>
+        <strong>Código &amp; Evolución</strong>
+      </div>
+      <div class="celda"><span class="et">Dibujó y programó</span>{sitio.autor}</div>
+      <div class="celda"><span class="et">Lugar</span>{sitio.ubicacion}</div>
+      <div class="celda"><span class="et">Escala</span>1:1</div>
+      <div class="celda"><span class="et">Revisión</span>{fecha}</div>
+      <div class="celda"><span class="et">Estado</span><span class="vivo">En evolución</span></div>
+      <div class="celda redes">
+        <span class="et">Seguime</span>
+        <ul>{contacto.map((c) => <li><a href={c.url} target="_blank" rel="noopener">{c.nombre} ↗</a></li>)}</ul>
+      </div>
+    </div>
+    <p class="legal">© {hoy.getFullYear()} {sitio.autor}. Sin plantillas: diseñado y programado a medida.</p>
   </div>
 </footer>
 
 <style>
-  .footer { border-top: 1px solid var(--border); padding: 28px 0; color: var(--muted); font-size: 0.9rem; }
-  .inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
-  p { margin: 0; }
-  ul { display: flex; gap: 18px; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
-  a { color: var(--muted); }
-  a:hover { color: var(--green); }
+  .footer { padding: 72px 0 96px; }
+  .rotulo {
+    display: grid; grid-template-columns: 2fr repeat(3, 1fr);
+    border: 1px solid var(--linea-fuerte); background: var(--tinta-2);
+  }
+  .celda {
+    padding: 14px 16px; border-right: 1px solid var(--linea); border-bottom: 1px solid var(--linea);
+    font-size: 0.9rem; display: flex; flex-direction: column; gap: 4px;
+  }
+  .et { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--naranja); }
+  .grande { grid-row: span 2; justify-content: flex-end; }
+  .grande strong { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; text-transform: uppercase; line-height: 0.9; }
+  ul { display: flex; flex-wrap: wrap; gap: 6px 18px; list-style: none; margin: 0; padding: 0; }
+  a { color: var(--texto); text-decoration: none; border-bottom: 1px solid var(--linea-fuerte); }
+  a:hover { color: var(--verde); border-color: var(--verde); }
+  .vivo { display: inline-flex; align-items: center; gap: 8px; }
+  .vivo::before { content: ''; width: 8px; height: 8px; background: var(--verde); animation: latido 2s ease-in-out infinite; }
+  @keyframes latido { 50% { opacity: 0.25; } }
+  .legal { margin: 18px 0 0; font-family: var(--font-mono); font-size: 0.72rem; color: var(--tenue); }
+  @media (max-width: 760px) {
+    .rotulo { grid-template-columns: 1fr 1fr; }
+    .grande { grid-column: span 2; grid-row: auto; }
+    .redes { grid-column: span 2; }
+  }
 </style>

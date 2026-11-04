@@ -1,0 +1,90 @@
+---
+// Lista de trabajos tipo índice: títulos grandes y, con mouse, la captura
+// sigue al cursor sobre cada fila. En celular la captura se ve debajo.
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { proyectos: CollectionEntry<'proyectos'>[]; robotica?: boolean; desde?: number; }
+const { proyectos, robotica = true, desde = 1 } = Astro.props;
+const etiquetas = { web: 'Aplicación web', software: 'Software a medida', robotica: 'Robótica' };
+---
+<ul class="obras">
+  {proyectos.map((p, i) => (
+    <li data-aparece>
+      <a class="obra" href={`/proyectos/${p.id}/`}>
+        <span class="obra-n">{String(desde + i).padStart(2, '0')}</span>
+        <span class="obra-titulo">{p.data.titulo}</span>
+        <span class="obra-meta">{etiquetas[p.data.categoria]} · {p.data.anio}</span>
+        <span class="obra-res">{p.data.resumen}</span>
+        <span class="obra-tec">{p.data.tecnologias.slice(0, 4).join(' / ')}</span>
+        {p.data.imagen && (
+          <span class:list={['obra-img', { contener: p.data.imagenAjuste === 'contener' }]}>
+            <Image src={p.data.imagen} alt="" width={560} loading="lazy" />
+          </span>
+        )}
+      </a>
+    </li>
+  ))}
+  {robotica && (
+    <li data-aparece>
+      <div class="obra pronto rayado">
+        <span class="obra-n">{String(desde + proyectos.length).padStart(2, '0')}</span>
+        <span class="obra-titulo">Robótica</span>
+        <span class="obra-meta">En el taller · próximamente</span>
+        <span class="obra-res">Acá van a aparecer mis proyectos de robótica.</span>
+      </div>
+    </li>
+  )}
+</ul>
+
+<script>
+  if (matchMedia('(pointer: fine)').matches) {
+    document.querySelectorAll<HTMLElement>('.obras').forEach((lista) => {
+      lista.addEventListener('pointermove', (e) => {
+        const fila = (e.target as HTMLElement).closest<HTMLElement>('a.obra');
+        if (!fila) return;
+        const r = fila.getBoundingClientRect();
+        // Que la captura no se salga por la derecha.
+        const x = Math.min(e.clientX - r.left, r.width - 380);
+        fila.style.setProperty('--mx', `${x}px`);
+        fila.style.setProperty('--my', `${e.clientY - r.top}px`);
+      });
+    });
+  }
+</script>
+
+<style>
+  .obras { list-style: none; margin: 0 0 40px; padding: 0; border-top: 2px solid var(--texto); }
+  .obra {
+    position: relative; display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; column-gap: 24px; row-gap: 6px;
+    padding: 30px 0; border-bottom: 1px solid var(--linea-fuerte); text-decoration: none; color: inherit;
+  }
+  .obra-n { font-family: var(--font-mono); color: var(--naranja); font-size: 0.85rem; padding-top: 0.6em; grid-row: span 3; }
+  .obra-titulo { font-family: var(--font-display); font-weight: 900; text-transform: uppercase; font-size: clamp(2.4rem, 6.5vw, 5rem); line-height: 0.9; transition: transform .35s cubic-bezier(.2, .7, .2, 1), color .25s ease; }
+  .obra-meta { font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tenue); align-self: center; text-align: right; }
+  .obra-res { grid-column: 2; color: #c3cddb; max-width: 60ch; }
+  .obra-tec { grid-column: 2; font-family: var(--font-mono); font-size: 0.76rem; color: var(--azul); }
+  a.obra:hover .obra-titulo { color: var(--verde); transform: translateX(14px); }
+  .obra-img {
+    position: absolute; z-index: 5; left: 0; top: 0; width: 340px; aspect-ratio: 16 / 10;
+    border: 1px solid var(--texto); background: var(--tinta-2); overflow: hidden; pointer-events: none;
+    box-shadow: 10px 10px 0 rgba(99, 214, 144, 0.25);
+    opacity: 0; transform: translate(calc(var(--mx, 0px) + 28px), calc(var(--my, 0px) - 50%)) rotate(-3deg) scale(.9);
+    transition: opacity .25s ease, transform .18s ease-out;
+  }
+  .obra-img :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .obra-img.contener :global(img) { object-fit: contain; padding: 14px; }
+  a.obra:hover .obra-img { opacity: 1; transform: translate(calc(var(--mx, 0px) + 28px), calc(var(--my, 0px) - 50%)) rotate(-2deg) scale(1); }
+  .pronto { color: var(--tenue); padding-inline: 0; }
+  .pronto .obra-titulo { color: transparent; -webkit-text-stroke: 1px var(--tenue); }
+
+  @media (max-width: 720px), (pointer: coarse) {
+    .obra { grid-template-columns: 1fr; }
+    .obra-n { grid-row: auto; padding: 0; }
+    .obra-meta { text-align: left; }
+    .obra-res, .obra-tec { grid-column: 1; }
+    .obra-img { position: static; width: 100%; opacity: 1; transform: none; margin-top: 14px; box-shadow: 6px 6px 0 rgba(99, 214, 144, 0.2); }
+    a.obra:hover .obra-img { transform: none; }
+    a.obra:hover .obra-titulo { transform: none; }
+  }
+</style>

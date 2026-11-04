@@ -2,16 +2,19 @@
 import Base from '../layouts/Base.astro';
 ---
 <Base titulo="Página no encontrada">
-  <section class="section">
-    <div class="container error">
-      <p class="eyebrow">error 404</p>
-      <h1 class="section-title">Esta página no existe</h1>
-      <p class="lead">Puede que el link esté mal escrito o que la página se haya movido.</p>
-      <a class="btn btn-primary" href="/">Volver al inicio</a>
+  <section class="error">
+    <div class="container">
+      <p class="lamina"><b>Error 404</b> Lámina extraviada <span class="esc">Sin escala</span></p>
+      <p class="cuatro" aria-hidden="true">404</p>
+      <h1 class="titulo">Esta lámina<br /><em>no está</em> en el plano</h1>
+      <p class="bajada">Puede que el link esté mal escrito o que la página se haya movido.</p>
+      <a class="btn" href="/">← Volver a la portada</a>
     </div>
   </section>
 </Base>
 
 <style>
-  .error { text-align: center; min-height: 40vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .error { padding: 56px 0 40px; min-height: 60vh; }
+  .cuatro { margin: 0; font-family: var(--font-display); font-weight: 900; font-size: clamp(8rem, 30vw, 20rem); line-height: 0.8; color: transparent; -webkit-text-stroke: 2px var(--naranja); }
+  .bajada { color: #c3cddb; margin: 0 0 32px; }
 </style>
